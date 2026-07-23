@@ -10,11 +10,18 @@ function getInitials(name: string | null) {
   return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
 }
 
+function getFirstName(name: string | null) {
+  if (!name?.trim()) return "";
+  const first = name.trim().split(/\s+/).filter(Boolean)[0] || "";
+  return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
+}
+
 export function AppShell() {
   const { name, logout } = useAuth();
   const navigate = useNavigate();
   const [confirmSignOut, setConfirmSignOut] = useState(false);
   const initials = useMemo(() => getInitials(name), [name]);
+  const firstName = useMemo(() => getFirstName(name), [name]);
 
   useEffect(() => {
     if (!confirmSignOut) return;
@@ -80,11 +87,14 @@ export function AppShell() {
             aria-labelledby="signout-title"
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="panel-kicker">Patients</p>
             <h2 id="signout-title" className="modal-title">
               Sign out?
             </h2>
-            <p className="modal-copy">Are you sure you want to sign out?</p>
+            <p className="modal-copy">
+              {firstName
+                ? `${firstName}, are you sure you want to sign out?`
+                : "Are you sure you want to sign out?"}
+            </p>
             <div className="actions">
               <button className="btn btn-primary" type="button" onClick={handleConfirmSignOut}>
                 Yes, sign out
