@@ -14,18 +14,18 @@ export function AuthLayout({ children }: Props) {
           <header className="auth-brand-top">
             <BrandLogo className="auth-logo-img" />
             <div>
-              <p className="auth-brand-kicker">Clinical Instrument</p>
+              <p className="auth-brand-kicker">Clinical charting</p>
               <p className="auth-logo-wordmark">Patient Chart</p>
             </div>
           </header>
 
           <div className="auth-brand-main">
             <h1 className="auth-brand-title">
-              Desk chart ready
-              <span> before the queue.</span>
+              One chart
+              <span> for every visit.</span>
             </h1>
             <p className="auth-brand-copy">
-              Intake, vitals, and BMI-guided assessment at one desk.
+              Registration, vitals, and BMI-guided assessment.
             </p>
 
             <div className="auth-console" aria-hidden="true">
