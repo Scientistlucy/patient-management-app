@@ -80,7 +80,7 @@ export function AppShell() {
             aria-labelledby="signout-title"
             onClick={(e) => e.stopPropagation()}
           >
-            <p className="panel-kicker">Session</p>
+            <p className="panel-kicker">Patients</p>
             <h2 id="signout-title" className="modal-title">
               Sign out?
             </h2>
