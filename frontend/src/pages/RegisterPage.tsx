@@ -64,12 +64,8 @@ export function RegisterPage() {
         return false;
       }
       return true;
-    } catch (err) {
-      setUniqueError(
-        err instanceof ApiError
-          ? err.message
-          : "Could not verify Patient Id. Try again.",
-      );
+    } catch {
+      setUniqueError("Could not verify Patient Id right now. Please try again.");
       return false;
     } finally {
       setCheckingUnique(false);

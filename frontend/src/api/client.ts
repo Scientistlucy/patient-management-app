@@ -111,9 +111,22 @@ export const api = {
     );
   },
   checkPatientUnique(unique: string) {
+    const value = unique.trim();
     return request<{ exists: boolean; unique: string }>(
-      `/patients/check-unique/${encodeURIComponent(unique.trim())}`,
-    );
+      `/patients/check-unique/${encodeURIComponent(value)}`,
+    ).catch(async (err) => {
+      // Fallback if the check endpoint is not deployed yet
+      if (!(err instanceof ApiError) || (err.code !== 404 && err.code !== 405)) {
+        throw err;
+      }
+      const patients = await request<
+        Array<{ unique: string }>
+      >("/patients/view");
+      return {
+        exists: patients.some((p) => p.unique.toLowerCase() === value.toLowerCase()),
+        unique: value,
+      };
+    });
   },
   addVital(body: {
     visit_date: string;
