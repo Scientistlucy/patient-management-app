@@ -170,9 +170,9 @@ App: `http://localhost:5173`
 4. Complete the assessment form  
 5. Open Patient Listing — try search, filters, **Show 10/20/50**, and report download  
 
-## Hosting (so reviewers can test)
+## Hosting
 
-Reviewers only need **one frontend URL**. The API URL stays in env vars.
+The live app is served from Vercel. The API URL is configured with `VITE_API_BASE` and does not need to be opened separately.
 
 ### Production URL
 
@@ -199,11 +199,10 @@ Reviewers only need **one frontend URL**. The API URL stays in env vars.
 1. Import the GitHub repo and set Root Directory to `frontend`  
 2. Add:
    - `VITE_API_BASE=https://patient-management-app-production-ef47.up.railway.app/api`
-3. Deploy and share the Vercel URL
+3. Deploy
 
-### What to send reviewers
+### Try the app
 
-1. **Live app:** [https://patient-management-app-iota.vercel.app](https://patient-management-app-iota.vercel.app)  
-2. Optional demo login credentials  
-3. Optional short Loom walkthrough  
-4. Note that the Postman collection was used as a **shape reference** only ([docs](https://documenter.getpostman.com/view/18832855/2sB3Wnx2PF))
+1. Open the live app: [https://patient-management-app-iota.vercel.app](https://patient-management-app-iota.vercel.app)  
+2. Create an account (or sign in) and walk through registration → vitals → assessment → listing  
+3. The [Postman collection](https://documenter.getpostman.com/view/18832855/2sB3Wnx2PF) was used as a **shape reference** only
