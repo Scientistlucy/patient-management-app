@@ -56,13 +56,16 @@ export function AppShell() {
           </nav>
 
           <div className="nav-user">
-            <span
-              className="user-avatar"
+            <div
+              className="user-chip"
               title={name || "Signed in"}
               aria-label={name ? `Signed in as ${name}` : "Signed in"}
             >
-              {initials}
-            </span>
+              <span className="user-avatar" aria-hidden="true">
+                {initials}
+              </span>
+              <span className="user-name">{name?.trim() || "Signed in"}</span>
+            </div>
             <button
               type="button"
               className="btn-signout"
