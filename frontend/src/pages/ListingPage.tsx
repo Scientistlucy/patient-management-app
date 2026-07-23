@@ -59,8 +59,11 @@ export function ListingPage() {
     setError("");
     try {
       let data = await api.listVisits(date);
-      // If Railway still has a tiny census, ask the API to seed demo patients once.
-      if (data.rows.length < 20) {
+      // Backfill / rename demo census when the list is small or still has SEED* ids.
+      if (
+        data.rows.length < 20 ||
+        data.rows.some((row) => row.unique.toUpperCase().startsWith("SEED"))
+      ) {
         try {
           await api.seedDemoPatients();
           data = await api.listVisits(date);

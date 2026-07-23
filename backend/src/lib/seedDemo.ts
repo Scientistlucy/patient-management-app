@@ -40,12 +40,21 @@ function bmiFrom(heightCm: number, weightKg: number) {
   return Number((weightKg / (m * m)).toFixed(1));
 }
 
+function patientId(index: number) {
+  return String(1001 + index);
+}
+
 export async function seedDemoPatients(prisma: PrismaClient) {
+  // Drop old SEED* demo rows so Patient Id no longer shows that prefix.
+  await prisma.patient.deleteMany({
+    where: { unique: { startsWith: "SEED" } },
+  });
+
   let created = 0;
   let skipped = 0;
 
   for (let index = 0; index < firstNames.length; index += 1) {
-    const unique = `SEED${String(index + 1).padStart(3, "0")}`;
+    const unique = patientId(index);
     const existing = await prisma.patient.findUnique({ where: { unique } });
     if (existing) {
       skipped += 1;
@@ -94,7 +103,7 @@ export async function seedDemoPatients(prisma: PrismaClient) {
           generalHealth: index % 4 === 0 ? "Poor" : "Good",
           onDiet: bmi > 25 ? (index % 2 === 0 ? "Yes" : "No") : null,
           onDrugs: bmi <= 25 ? (index % 2 === 0 ? "Yes" : "No") : null,
-          comments: `Demo chart for ${firstname} ${lastname}`,
+          comments: `Chart for ${firstname} ${lastname}`,
         },
       });
     }
