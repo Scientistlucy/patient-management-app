@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiError, api } from "../api/client";
 import { ProgressSteps } from "../components/ProgressSteps";
@@ -34,14 +34,6 @@ export function RegisterPage() {
   const [checkingUnique, setCheckingUnique] = useState(false);
   const [loading, setLoading] = useState(false);
   const calculatedAge = useMemo(() => ageFromDob(draft.dob), [draft.dob]);
-
-  useEffect(() => {
-    const flash = sessionStorage.getItem("patient_chart_flash");
-    if (flash) {
-      sessionStorage.removeItem("patient_chart_flash");
-      setSuccess(flash);
-    }
-  }, []);
 
   function update<K extends keyof Draft>(key: K, value: Draft[K]) {
     setDraft((prev) => ({ ...prev, [key]: value }));

@@ -56,12 +56,6 @@ export function LoginPage() {
         setSuccess(`Signed in successfully. Welcome back${data.name ? `, ${data.name}` : ""}.`);
       }
 
-      const flash =
-        mode === "signup"
-          ? "Welcome! Your account was created and you are signed in."
-          : `Signed in successfully. Welcome back${data.name ? `, ${data.name}` : ""}.`;
-
-      sessionStorage.setItem("patient_chart_flash", flash);
       await new Promise((resolve) => window.setTimeout(resolve, 900));
       login(data.access_token, data.name);
       navigate("/register", { replace: true });
