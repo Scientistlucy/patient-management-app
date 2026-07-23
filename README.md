@@ -2,9 +2,7 @@
 
 Web application for clinician sign-in, patient registration, vitals (BMI), conditional assessment forms, and patient listing with filters, pagination, and report download.
 
-**Live app:** [https://patient-management-app-iota.vercel.app](https://patient-management-app-iota.vercel.app)  
-**API:** [https://patient-management-app-production-ef47.up.railway.app/api](https://patient-management-app-production-ef47.up.railway.app/api)  
-**Repo:** [https://github.com/Scientistlucy/patient-management-app](https://github.com/Scientistlucy/patient-management-app)
+**Live app:** [https://patient-management-app-iota.vercel.app](https://patient-management-app-iota.vercel.app)
 
 ## Approach
 
@@ -176,14 +174,9 @@ App: `http://localhost:5173`
 
 Reviewers only need **one frontend URL**. The API URL stays in env vars.
 
-### Production URLs
+### Production URL
 
-| Piece | URL |
-|-------|-----|
-| **Live app (Vercel)** | [https://patient-management-app-iota.vercel.app](https://patient-management-app-iota.vercel.app) |
-| **API (Railway)** | [https://patient-management-app-production-ef47.up.railway.app/api](https://patient-management-app-production-ef47.up.railway.app/api) |
-| **API health** | [https://patient-management-app-production-ef47.up.railway.app/api/health](https://patient-management-app-production-ef47.up.railway.app/api/health) |
-| **GitHub repo** | [https://github.com/Scientistlucy/patient-management-app](https://github.com/Scientistlucy/patient-management-app) |
+**Live app (Vercel):** [https://patient-management-app-iota.vercel.app](https://patient-management-app-iota.vercel.app)
 
 | Piece | Host |
 |-------|------|
@@ -211,7 +204,6 @@ Reviewers only need **one frontend URL**. The API URL stays in env vars.
 ### What to send reviewers
 
 1. **Live app:** [https://patient-management-app-iota.vercel.app](https://patient-management-app-iota.vercel.app)  
-2. **GitHub repo:** [https://github.com/Scientistlucy/patient-management-app](https://github.com/Scientistlucy/patient-management-app)  
-3. Optional demo login credentials  
-4. Optional short Loom walkthrough  
-5. Note that the Postman collection was used as a **shape reference** only ([docs](https://documenter.getpostman.com/view/18832855/2sB3Wnx2PF))
+2. Optional demo login credentials  
+3. Optional short Loom walkthrough  
+4. Note that the Postman collection was used as a **shape reference** only ([docs](https://documenter.getpostman.com/view/18832855/2sB3Wnx2PF))
