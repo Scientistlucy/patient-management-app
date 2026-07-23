@@ -50,6 +50,8 @@ export function ListingPage() {
   const [downloadOpen, setDownloadOpen] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const downloadRef = useRef<HTMLDivElement>(null);
 
   async function load(date?: string) {
@@ -205,6 +207,19 @@ export function ListingPage() {
     };
   }, [scopedRows, tabCounts]);
 
+  const totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
+  const currentPage = Math.min(page, totalPages);
+  const pageStart = filtered.length === 0 ? 0 : (currentPage - 1) * pageSize + 1;
+  const pageEnd = Math.min(currentPage * pageSize, filtered.length);
+  const pagedRows = useMemo(
+    () => filtered.slice((currentPage - 1) * pageSize, currentPage * pageSize),
+    [filtered, currentPage, pageSize],
+  );
+
+  useEffect(() => {
+    setPage(1);
+  }, [search, status, gender, ageMin, ageMax, visitDate, pageSize]);
+
   function clearFilters() {
     setVisitDate("");
     setSearch("");
@@ -212,6 +227,7 @@ export function ListingPage() {
     setGender("all");
     setAgeMin("");
     setAgeMax("");
+    setPage(1);
     void load();
   }
 
@@ -449,11 +465,28 @@ export function ListingPage() {
         <div className="table-panel">
           <div className="table-meta">
             <span>
-              Showing <strong>{filtered.length}</strong> of {rows.length} patients
+              {filtered.length === 0
+                ? "Showing 0 patients"
+                : (
+                  <>
+                    Showing <strong>{pageStart}–{pageEnd}</strong> of{" "}
+                    <strong>{filtered.length}</strong>
+                    {filtered.length !== rows.length ? ` (filtered from ${rows.length})` : ""} patients
+                  </>
+                )}
             </span>
-            {displayStats.no_vitals > 0 ? (
-              <span className="muted">{displayStats.no_vitals} without vitals</span>
-            ) : null}
+            <label className="page-size-control">
+              <span>Show</span>
+              <select
+                value={pageSize}
+                onChange={(e) => setPageSize(Number(e.target.value))}
+                aria-label="Rows per page"
+              >
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+              </select>
+            </label>
           </div>
           <div className="table-wrap listing-table">
             <table className="data">
@@ -482,7 +515,7 @@ export function ListingPage() {
                     </td>
                   </tr>
                 ) : (
-                  filtered.map((row) => (
+                  pagedRows.map((row) => (
                     <tr key={`${row.patient_id}-${row.visit_date ?? "none"}`}>
                       <td className="mono">{row.unique}</td>
                       <td className="name-cell">
@@ -512,6 +545,28 @@ export function ListingPage() {
                 )}
               </tbody>
             </table>
+          </div>
+
+          <div className="pagination-bar">
+            <button
+              type="button"
+              className="btn btn-ghost"
+              disabled={loading || currentPage <= 1}
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+            >
+              Previous
+            </button>
+            <span className="pagination-status">
+              Page <strong>{currentPage}</strong> of <strong>{totalPages}</strong>
+            </span>
+            <button
+              type="button"
+              className="btn btn-ghost"
+              disabled={loading || currentPage >= totalPages}
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            >
+              Next
+            </button>
           </div>
         </div>
       </section>

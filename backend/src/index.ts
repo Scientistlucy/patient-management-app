@@ -1,6 +1,8 @@
 import "dotenv/config";
 import cors from "cors";
 import express from "express";
+import { prisma } from "./lib/prisma.js";
+import { seedDemoPatients } from "./lib/seedDemo.js";
 import { authRouter } from "./routes/auth.js";
 import { patientsRouter } from "./routes/patients.js";
 import { vitalsRouter } from "./routes/vitals.js";
@@ -33,4 +35,16 @@ app.use("/api/visits", visitsRouter);
 
 app.listen(port, "0.0.0.0", () => {
   console.log(`Patient Chart API listening on port ${port}`);
+
+  // Idempotent demo census so listing pagination has enough rows in fresh deploys.
+  if (process.env.SEED_DEMO === "false") return;
+  void seedDemoPatients(prisma)
+    .then((result) => {
+      console.log(
+        `Demo patients ready (created ${result.created}, skipped ${result.skipped}).`,
+      );
+    })
+    .catch((err) => {
+      console.error("Demo patient seed failed:", err);
+    });
 });
