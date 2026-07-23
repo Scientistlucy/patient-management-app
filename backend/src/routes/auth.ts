@@ -1,9 +1,7 @@
 import { Router } from "express";
-import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { z } from "zod";
-import { isEmailConfigured, sendPasswordResetEmail } from "../lib/mail.js";
 import { prisma } from "../lib/prisma.js";
 import { fail, ok } from "../lib/response.js";
 
@@ -17,16 +15,6 @@ const signupSchema = z.object({
 const signinSchema = z.object({
   email: z.string().email("Enter a valid email address"),
   password: z.string().min(1, "Password is required"),
-});
-
-const forgotSchema = z.object({
-  email: z.string().email("Enter a valid email address"),
-});
-
-const resetSchema = z.object({
-  email: z.string().email("Enter a valid email address"),
-  token: z.string().min(1, "Reset token is required"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export const authRouter = Router();
@@ -67,7 +55,7 @@ authRouter.post("/signin", async (req, res) => {
 
   const valid = await bcrypt.compare(password, user.passwordHash);
   if (!valid) {
-    return fail(res, "Incorrect password. Try again or use Forgot password.", 401);
+    return fail(res, "Incorrect password. Try again.", 401);
   }
 
   const secret = process.env.JWT_SECRET;
@@ -87,109 +75,4 @@ authRouter.post("/signin", async (req, res) => {
     created_at: user.createdAt,
     access_token,
   });
-});
-
-authRouter.post("/forgot-password", async (req, res) => {
-  const parsed = forgotSchema.safeParse(req.body);
-  if (!parsed.success) {
-    const first = parsed.error.issues[0]?.message ?? "Validation failed";
-    return fail(res, first, 422, parsed.error.flatten());
-  }
-
-  const { email } = parsed.data;
-  const user = await prisma.user.findUnique({ where: { email } });
-  if (!user) {
-    return fail(res, "No account found for this email.", 404);
-  }
-
-  const resetToken = crypto.randomBytes(24).toString("hex");
-  const resetTokenExpires = new Date(Date.now() + 30 * 60 * 1000);
-
-  await prisma.user.update({
-    where: { id: user.id },
-    data: { resetToken, resetTokenExpires },
-  });
-
-  // Prefer the browser Origin so production links hit Vercel, not localhost.
-  const originHeader = req.get("origin");
-  const fromOrigin =
-    originHeader && /^https?:\/\//i.test(originHeader)
-      ? originHeader.replace(/\/$/, "")
-      : null;
-  const appUrl = (
-    fromOrigin ||
-    process.env.APP_URL ||
-    "http://localhost:5173"
-  ).replace(/\/$/, "");
-  const resetUrl = `${appUrl}/reset-password?email=${encodeURIComponent(email)}&token=${encodeURIComponent(resetToken)}`;
-
-  let emailed = false;
-  let mailError = "";
-
-  if (isEmailConfigured()) {
-    try {
-      await sendPasswordResetEmail({
-        to: email,
-        name: user.firstname,
-        resetUrl,
-      });
-      emailed = true;
-    } catch (err) {
-      mailError = err instanceof Error ? err.message : "Email send failed";
-      console.error("Failed to send reset email:", err);
-    }
-  }
-
-  if (emailed) {
-    return ok(res, {
-      message:
-        "Password reset link sent. Check your inbox (and spam). You can also use the link below.",
-      email,
-      emailed: true,
-      reset_url: resetUrl,
-    });
-  }
-
-  return ok(res, {
-    message: mailError
-      ? "We could not send email right now. Use the reset link below to create a new password."
-      : "Email is not configured on the server. Use the reset link below to create a new password.",
-    email,
-    emailed: false,
-    reset_url: resetUrl,
-  });
-});
-
-authRouter.post("/reset-password", async (req, res) => {
-  const parsed = resetSchema.safeParse(req.body);
-  if (!parsed.success) {
-    const first = parsed.error.issues[0]?.message ?? "Validation failed";
-    return fail(res, first, 422, parsed.error.flatten());
-  }
-
-  const { email, token, password } = parsed.data;
-  const user = await prisma.user.findUnique({ where: { email } });
-  if (!user || !user.resetToken || !user.resetTokenExpires) {
-    return fail(res, "Invalid or expired reset link. Request a new one.", 400);
-  }
-
-  if (user.resetToken !== token) {
-    return fail(res, "Invalid reset token. Request a new forgot-password link.", 400);
-  }
-
-  if (user.resetTokenExpires.getTime() < Date.now()) {
-    return fail(res, "Reset token has expired. Request a new one.", 400);
-  }
-
-  const passwordHash = await bcrypt.hash(password, 10);
-  await prisma.user.update({
-    where: { id: user.id },
-    data: {
-      passwordHash,
-      resetToken: null,
-      resetTokenExpires: null,
-    },
-  });
-
-  return ok(res, { message: "Password updated successfully. You can sign in now." });
 });

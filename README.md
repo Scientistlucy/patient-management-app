@@ -14,7 +14,7 @@ Web application for patient registration, vitals (BMI), conditional assessment f
 | Backend | Node.js + Express + TypeScript |
 | Database | PostgreSQL |
 | ORM | Prisma |
-| Auth | JWT Bearer tokens + email password reset (Nodemailer/SMTP)
+| Auth | JWT Bearer tokens (sign up / sign in)
 | Validation | Zod |
 
 ## Design direction
@@ -51,31 +51,6 @@ PORT=4000
 ```
 
 Copy from `backend/.env.example` if needed.
-
-### Email (Forgot password → real inbox)
-
-Password reset sends a real email with a link like:
-
-`http://localhost:5173/reset-password?email=...&token=...`
-
-Add SMTP settings in `backend/.env` (Gmail example):
-
-```env
-APP_URL="http://localhost:5173"
-SMTP_HOST="smtp.gmail.com"
-SMTP_PORT="587"
-SMTP_USER="your.email@gmail.com"
-SMTP_PASS="your-16-char-app-password"
-SMTP_FROM="Patient Chart <your.email@gmail.com>"
-```
-
-For Gmail: turn on 2-Step Verification, then create an **App Password** and use that as `SMTP_PASS` (not your normal Gmail password).
-
-Flow:
-1. User clicks **Forgot password?** and enters email  
-2. Backend emails a reset link  
-3. User opens the link → **Create new password** page  
-4. After save, sign in with the new password  
 
 ### 2. Backend
 

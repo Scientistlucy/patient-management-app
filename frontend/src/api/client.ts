@@ -108,21 +108,6 @@ export const api = {
       access_token: string;
     }>("/user/signin", { method: "POST", body: JSON.stringify(body) }, false);
   },
-  forgotPassword(body: { email: string }) {
-    return request<{
-      message: string;
-      email: string;
-      emailed?: boolean;
-      reset_url?: string;
-    }>("/user/forgot-password", { method: "POST", body: JSON.stringify(body) }, false);
-  },
-  resetPassword(body: { email: string; token: string; password: string }) {
-    return request<{ message: string }>(
-      "/user/reset-password",
-      { method: "POST", body: JSON.stringify(body) },
-      false,
-    );
-  },
   registerPatient(body: {
     unique: string;
     firstname: string;

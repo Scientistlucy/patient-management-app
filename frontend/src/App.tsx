@@ -2,11 +2,9 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { AppShell } from "./components/AppShell";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AssessmentPage } from "./pages/AssessmentPage";
-import { ForgotPasswordPage } from "./pages/ForgotPasswordPage";
 import { ListingPage } from "./pages/ListingPage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
-import { ResetPasswordPage } from "./pages/ResetPasswordPage";
 import { VitalsPage } from "./pages/VitalsPage";
 
 export default function App() {
@@ -14,8 +12,6 @@ export default function App() {
     <Routes>
       {/* Public auth routes */}
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route path="/reset-password" element={<ResetPasswordPage />} />
 
       {/* Protected clinical routes — require Bearer token */}
       <Route element={<ProtectedRoute />}>

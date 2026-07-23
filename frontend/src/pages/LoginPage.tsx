@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { ApiError, api, getRememberedEmail, setRememberedEmail } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { AuthLayout } from "../components/AuthLayout";
@@ -155,7 +155,6 @@ export function LoginPage() {
               />
               <span>Remember me</span>
             </label>
-            <Link to="/forgot-password">Forgot password?</Link>
           </div>
         ) : null}
 
