@@ -192,4 +192,12 @@ export const api = {
       body: JSON.stringify({ visit_date: visit_date || undefined }),
     });
   },
+  seedDemoPatients() {
+    return request<{
+      message: string;
+      created: number;
+      skipped: number;
+      total: number;
+    }>("/patients/seed-demo", { method: "POST", body: "{}" });
+  },
 };

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { z } from "zod";
 import { prisma } from "../lib/prisma.js";
 import { parseDateOnly } from "../lib/bmi.js";
+import { seedDemoPatients } from "../lib/seedDemo.js";
 import { fail, ok } from "../lib/response.js";
 import { requireAuth } from "../middleware/auth.js";
 
@@ -17,6 +18,19 @@ const registerSchema = z.object({
 export const patientsRouter = Router();
 
 patientsRouter.use(requireAuth);
+
+patientsRouter.post("/seed-demo", async (_req, res) => {
+  try {
+    const result = await seedDemoPatients(prisma);
+    return ok(res, {
+      message: `Demo patients ready. Created ${result.created}, skipped ${result.skipped}.`,
+      ...result,
+    });
+  } catch (err) {
+    console.error("seed-demo failed:", err);
+    return fail(res, "Failed to seed demo patients", 500);
+  }
+});
 
 patientsRouter.get("/check-unique/:unique", async (req, res) => {
   const unique = decodeURIComponent(req.params.unique || "").trim();

@@ -58,7 +58,16 @@ export function ListingPage() {
     setLoading(true);
     setError("");
     try {
-      const data = await api.listVisits(date);
+      let data = await api.listVisits(date);
+      // If Railway still has a tiny census, ask the API to seed demo patients once.
+      if (data.rows.length < 20) {
+        try {
+          await api.seedDemoPatients();
+          data = await api.listVisits(date);
+        } catch {
+          // Older API builds may not expose seed-demo yet; listing still works.
+        }
+      }
       setRows(data.rows);
       setStats(data.stats);
     } catch (err) {

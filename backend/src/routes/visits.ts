@@ -2,6 +2,7 @@ import { Router } from "express";
 import { z } from "zod";
 import { prisma } from "../lib/prisma.js";
 import { bmiStatus, calculateAge, isPlausibleBmi, parseDateOnly } from "../lib/bmi.js";
+import { seedDemoPatients } from "../lib/seedDemo.js";
 import { fail, ok } from "../lib/response.js";
 import { requireAuth } from "../middleware/auth.js";
 
@@ -76,6 +77,12 @@ visitsRouter.post("/view", async (req, res) => {
   const visitDateFilter = parsed.data.visit_date
     ? parseDateOnly(parsed.data.visit_date)
     : null;
+
+  // Keep the live listing populated for demos (idempotent; skips existing SEED* ids).
+  const patientCount = await prisma.patient.count();
+  if (patientCount < 20) {
+    await seedDemoPatients(prisma);
+  }
 
   const patients = await prisma.patient.findMany({
     include: {
