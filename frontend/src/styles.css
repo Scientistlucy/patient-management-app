@@ -1,8 +1,8 @@
 :root {
   --ink: #0a3d40;
   --ink-soft: #14555a;
-  --signal: #2a9d94;
-  --signal-deep: #1a7a74;
+  --signal: #2bbbad;
+  --signal-deep: #1a8f84;
   --paper: #f3f6f5;
   --paper-elevated: #ffffff;
   --line: #c5d0ce;
@@ -611,7 +611,7 @@ button {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 65% 50% at 8% 12%, rgba(42, 157, 148, 0.22), transparent 55%),
+    radial-gradient(ellipse 65% 50% at 8% 12%, rgba(43, 187, 173, 0.22), transparent 55%),
     radial-gradient(ellipse 50% 40% at 92% 88%, rgba(8, 47, 50, 0.9), transparent 50%),
     linear-gradient(168deg, #031517 0%, #0a3d40 48%, #0b4548 100%);
   pointer-events: none;
@@ -713,20 +713,18 @@ button {
 .auth-wrist {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   gap: 1rem;
-  margin: 0.85rem;
-  padding: 0.85rem 1rem;
-  border: 1px dashed rgba(232, 242, 240, 0.35);
-  border-radius: 8px;
-  background: linear-gradient(90deg, rgba(42, 157, 148, 0.2), transparent 55%);
+  padding: 0.95rem 1.05rem;
+  background: linear-gradient(90deg, rgba(43, 187, 173, 0.18), rgba(43, 187, 173, 0.05));
+  border-bottom: 1px solid rgba(232, 242, 240, 0.1);
 }
 
 .auth-wrist-label {
   display: block;
   font-family: var(--font-mono);
   font-size: 0.66rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: rgba(167, 201, 196, 0.88);
   margin-bottom: 0.28rem;
@@ -738,6 +736,12 @@ button {
   font-weight: 700;
   letter-spacing: 0.04em;
   color: #eef7f5;
+}
+
+.auth-wrist-name {
+  font-size: 0.92rem;
+  color: rgba(232, 242, 240, 0.7);
+  padding-bottom: 0.15rem;
 }
 
 .auth-console-board {
@@ -869,8 +873,8 @@ button {
 
 .auth-rail li.is-active {
   color: #eef7f5;
-  background: rgba(42, 157, 148, 0.18);
-  box-shadow: inset 0 0 0 1px rgba(42, 157, 148, 0.35);
+  background: rgba(43, 187, 173, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(43, 187, 173, 0.35);
 }
 
 .auth-brand-foot {
@@ -888,7 +892,7 @@ button {
   width: 0.28rem;
   height: 0.28rem;
   border-radius: 999px;
-  background: #7eb8b2;
+  background: var(--signal);
 }
 
 .auth-form-pane {
