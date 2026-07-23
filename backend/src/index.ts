@@ -31,6 +31,6 @@ app.use("/api/patients", patientsRouter);
 app.use("/api/vital", vitalsRouter);
 app.use("/api/visits", visitsRouter);
 
-app.listen(port, () => {
-  console.log(`Patient Chart API listening on http://localhost:${port}`);
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Patient Chart API listening on port ${port}`);
 });
