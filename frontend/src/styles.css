@@ -1559,7 +1559,8 @@ table.data td {
   font-size: 0.82rem;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
-  padding-right: 0.35rem !important;
+  padding-right: 0.75rem !important;
+  border-right: 1px solid var(--line);
 }
 
 .listing-table thead .row-index-col {
@@ -1567,6 +1568,15 @@ table.data td {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   font-weight: 600;
+}
+
+.listing-table tbody .row-index-col {
+  border-right: 1px solid var(--line);
+}
+
+.listing-table table.data td.row-index-col + td,
+.listing-table table.data th.row-index-col + th {
+  padding-left: 1rem;
 }
 
 .listing-table table.data td {
