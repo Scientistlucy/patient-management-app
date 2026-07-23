@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { ApiError, api } from "../api/client";
+import { LoadingStatus } from "../components/LoadingStatus";
 import { ProgressSteps } from "../components/ProgressSteps";
 import { todayISO } from "../utils/bmi";
 
@@ -139,6 +140,7 @@ export function AssessmentPage({ kind }: Props) {
             <button className="btn btn-primary" type="submit" disabled={loading}>
               {loading ? "Saving…" : "Save & view listing"}
             </button>
+            {loading ? <LoadingStatus label="Saving assessment…" /> : null}
           </div>
         </form>
       </section>

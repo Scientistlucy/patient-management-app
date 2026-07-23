@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ApiError, api } from "../api/client";
+import { LoadingStatus } from "../components/LoadingStatus";
 import { ProgressSteps } from "../components/ProgressSteps";
 import { calcBmi, todayISO } from "../utils/bmi";
 
@@ -165,6 +166,7 @@ export function VitalsPage() {
             <button className="btn btn-primary" type="submit" disabled={loading}>
               {loading ? "Saving…" : "Save vitals"}
             </button>
+            {loading ? <LoadingStatus label="Saving vitals…" /> : null}
           </div>
         </form>
       </section>

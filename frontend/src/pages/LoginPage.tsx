@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { ApiError, api, getRememberedEmail, setRememberedEmail } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { AuthLayout } from "../components/AuthLayout";
+import { LoadingStatus } from "../components/LoadingStatus";
 import { PasswordField } from "../components/PasswordField";
 
 export function LoginPage() {
@@ -164,6 +165,7 @@ export function LoginPage() {
           <button
             className="btn btn-ghost"
             type="button"
+            disabled={loading}
             onClick={() => {
               setMode(mode === "signin" ? "signup" : "signin");
               setError("");
@@ -173,6 +175,11 @@ export function LoginPage() {
           >
             {mode === "signin" ? "Create an account" : "Have an account?"}
           </button>
+          {loading ? (
+            <LoadingStatus
+              label={mode === "signin" ? "Signing in…" : "Creating account…"}
+            />
+          ) : null}
         </div>
       </form>
     </AuthLayout>

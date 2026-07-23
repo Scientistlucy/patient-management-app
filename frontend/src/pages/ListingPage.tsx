@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ApiError, api } from "../api/client";
+import { LoadingStatus } from "../components/LoadingStatus";
 import { downloadPatientCsv, downloadPatientPdf } from "../utils/reports";
 
 type Row = {
@@ -285,6 +286,7 @@ export function ListingPage() {
             <p className="panel-copy listing-copy">
               Review patients, BMI status, and visits in one place.
             </p>
+            {loading ? <LoadingStatus label="Loading census…" /> : null}
           </div>
 
           <div className="download-menu" ref={downloadRef}>
@@ -534,7 +536,10 @@ export function ListingPage() {
                 {loading ? (
                   <tr>
                     <td colSpan={8} className="empty">
-                      Loading…
+                      <LoadingStatus
+                        className="loading-status-block"
+                        label="Loading patients…"
+                      />
                     </td>
                   </tr>
                 ) : filtered.length === 0 ? (

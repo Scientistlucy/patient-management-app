@@ -72,11 +72,12 @@ Postman intro mentions “CRUD”, but the published collection has **no update/
 - Patient listing: search, gender, visit date, age filters, BMI status KPIs
 - Pagination: **Previous / Next** and **Show 10 / 20 / 50**
 - Download report as **CSV** or **PDF**
-- Clinical Instrument UI (IBM Plex, teal brand mark)
+- Clinical charting UI (IBM Plex, teal brand mark)
+- Loading status on auth, registration, vitals, assessment, and listing
 
 ## Design direction
 
-**Clinical Instrument** — industrial utilitarian clinical UI.
+**Clinical charting** — industrial utilitarian clinical UI.
 
 - Fonts: IBM Plex Sans + IBM Plex Mono
 - Differentiation: monospace Patient ID wristband + teal clinical palette

@@ -2,6 +2,7 @@ import { FormEvent, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiError, api } from "../api/client";
 import { BrandLogo } from "../components/BrandLogo";
+import { LoadingStatus } from "../components/LoadingStatus";
 import { ProgressSteps } from "../components/ProgressSteps";
 import { ageFromDob, todayISO } from "../utils/bmi";
 
@@ -268,6 +269,7 @@ export function RegisterPage() {
               >
                 {checkingUnique ? "Checking Patient Id…" : "Continue to confirm"}
               </button>
+              {checkingUnique ? <LoadingStatus label="Checking Patient Id…" /> : null}
             </div>
           </div>
         ) : null}
@@ -299,12 +301,13 @@ export function RegisterPage() {
               </div>
             </div>
             <div className="actions">
-              <button className="btn btn-ghost" type="button" onClick={() => setStep(1)}>
+              <button className="btn btn-ghost" type="button" onClick={() => setStep(1)} disabled={loading}>
                 Back
               </button>
               <button className="btn btn-primary" type="submit" disabled={loading}>
                 {loading ? "Saving…" : "Save & continue to vitals"}
               </button>
+              {loading ? <LoadingStatus label="Saving patient…" /> : null}
             </div>
           </form>
         ) : null}
