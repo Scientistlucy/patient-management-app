@@ -80,9 +80,11 @@ export function LoginPage() {
     <AuthLayout>
       <p className="panel-kicker">Account</p>
       <h2 className="panel-title">{mode === "signin" ? "Sign in" : "Create account"}</h2>
-      {mode === "signup" ? (
-        <p className="panel-copy">Create an account to start registering patients.</p>
-      ) : null}
+      <p className="panel-copy">
+        {mode === "signin"
+          ? "Sign in to continue registering the patient."
+          : "Create an account to start registering patients."}
+      </p>
 
       {error ? (
         <div className="alert alert-error" role="alert">
