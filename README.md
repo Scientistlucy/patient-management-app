@@ -6,9 +6,7 @@ Web application for clinician sign-in, patient registration, vitals (BMI), condi
 
 ## Approach
 
-**We built our own RESTful backend** (Node.js + Express + PostgreSQL).
-
-The [Postman Patient Management App collection](https://documenter.getpostman.com/view/18832855/2sB3Wnx2PF) was used **only as a request/response shape reference** (field names, route patterns, and success messages) — not as the live production API. The Postman sample stack is Laravel + Sanctum + MySQL; ours is Express + JWT + PostgreSQL.
+The [Postman Patient Management App collection](https://documenter.getpostman.com/view/18832855/2sB3Wnx2PF) was used **only as a request/response shape reference** (field names, route patterns, and success messages) — not as the live production API.
 
 ### Postman parity
 
@@ -42,7 +40,7 @@ Protected routes require:
 Authorization: Bearer <access_token>
 ```
 
-**Intentional difference:** Postman’s example for `POST /visits/view` returns a flat array of `{ name, age, bmi, status }`. Our API returns `{ rows, stats }` with richer row fields so the listing page can show filters, KPIs, pagination, and exports.
+**Intentional difference:** Postman’s example for `POST /visits/view` returns a flat array of `{ name, age, bmi, status }`. This API returns `{ rows, stats }` with richer row fields so the listing page can show filters, KPIs, pagination, and exports.
 
 Postman intro mentions “CRUD”, but the published collection has **no update/delete** (or forgot-password) requests. Those are out of scope here.
 
