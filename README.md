@@ -176,6 +176,15 @@ App: `http://localhost:5173`
 
 Reviewers only need **one frontend URL**. The API URL stays in env vars.
 
+### Production URLs
+
+| Piece | URL |
+|-------|-----|
+| **Live app (Vercel)** | [https://patient-management-app-iota.vercel.app](https://patient-management-app-iota.vercel.app) |
+| **API (Railway)** | [https://patient-management-app-production-ef47.up.railway.app/api](https://patient-management-app-production-ef47.up.railway.app/api) |
+| **API health** | [https://patient-management-app-production-ef47.up.railway.app/api/health](https://patient-management-app-production-ef47.up.railway.app/api/health) |
+| **GitHub repo** | [https://github.com/Scientistlucy/patient-management-app](https://github.com/Scientistlucy/patient-management-app) |
+
 | Piece | Host |
 |-------|------|
 | Frontend | Vercel (`frontend/` root) |
@@ -188,21 +197,21 @@ Reviewers only need **one frontend URL**. The API URL stays in env vars.
 3. Set env vars:
    - `DATABASE_URL` (Railway Postgres)
    - `JWT_SECRET`
-   - `CORS_ORIGIN=https://your-app.vercel.app`
-   - `APP_URL=https://your-app.vercel.app`
+   - `CORS_ORIGIN=https://patient-management-app-iota.vercel.app`
+   - `APP_URL=https://patient-management-app-iota.vercel.app`
 4. Confirm `/api/health` returns `{ "ok": true }`
 
 ### Frontend (Vercel)
 
 1. Import the GitHub repo and set Root Directory to `frontend`  
 2. Add:
-   - `VITE_API_BASE=https://your-api.up.railway.app/api`
+   - `VITE_API_BASE=https://patient-management-app-production-ef47.up.railway.app/api`
 3. Deploy and share the Vercel URL
 
 ### What to send reviewers
 
-1. Live app URL (Vercel)  
-2. GitHub repo link  
+1. **Live app:** [https://patient-management-app-iota.vercel.app](https://patient-management-app-iota.vercel.app)  
+2. **GitHub repo:** [https://github.com/Scientistlucy/patient-management-app](https://github.com/Scientistlucy/patient-management-app)  
 3. Optional demo login credentials  
 4. Optional short Loom walkthrough  
 5. Note that the Postman collection was used as a **shape reference** only ([docs](https://documenter.getpostman.com/view/18832855/2sB3Wnx2PF))
