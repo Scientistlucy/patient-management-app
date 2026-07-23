@@ -110,6 +110,11 @@ export const api = {
       { method: "POST", body: JSON.stringify(body) },
     );
   },
+  checkPatientUnique(unique: string) {
+    return request<{ exists: boolean; unique: string }>(
+      `/patients/check-unique/${encodeURIComponent(unique.trim())}`,
+    );
+  },
   addVital(body: {
     visit_date: string;
     height: string;

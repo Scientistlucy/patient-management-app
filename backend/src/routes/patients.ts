@@ -18,6 +18,16 @@ export const patientsRouter = Router();
 
 patientsRouter.use(requireAuth);
 
+patientsRouter.get("/check-unique/:unique", async (req, res) => {
+  const unique = decodeURIComponent(req.params.unique || "").trim();
+  if (!unique) {
+    return fail(res, "Patient Id is required", 422);
+  }
+
+  const existing = await prisma.patient.findUnique({ where: { unique } });
+  return ok(res, { exists: Boolean(existing), unique });
+});
+
 patientsRouter.post("/register", async (req, res) => {
   const parsed = registerSchema.safeParse(req.body);
   if (!parsed.success) {

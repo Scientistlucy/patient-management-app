@@ -30,6 +30,8 @@ export function RegisterPage() {
   const [draft, setDraft] = useState<Draft>(emptyDraft);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [uniqueError, setUniqueError] = useState("");
+  const [checkingUnique, setCheckingUnique] = useState(false);
   const [loading, setLoading] = useState(false);
   const calculatedAge = useMemo(() => ageFromDob(draft.dob), [draft.dob]);
 
@@ -43,14 +45,44 @@ export function RegisterPage() {
 
   function update<K extends keyof Draft>(key: K, value: Draft[K]) {
     setDraft((prev) => ({ ...prev, [key]: value }));
+    if (key === "unique") setUniqueError("");
   }
 
-  function goToConfirm() {
-    setError("");
-    if (!draft.unique.trim()) {
-      setError("Patient Id is required.");
-      return;
+  async function verifyUnique(unique: string) {
+    const value = unique.trim();
+    if (!value) {
+      setUniqueError("Patient Id is required.");
+      return false;
     }
+
+    setCheckingUnique(true);
+    setUniqueError("");
+    try {
+      const data = await api.checkPatientUnique(value);
+      if (data.exists) {
+        setUniqueError("This Patient Id already exists. Enter a different one.");
+        return false;
+      }
+      return true;
+    } catch (err) {
+      setUniqueError(
+        err instanceof ApiError
+          ? err.message
+          : "Could not verify Patient Id. Try again.",
+      );
+      return false;
+    } finally {
+      setCheckingUnique(false);
+    }
+  }
+
+  async function goToConfirm() {
+    setError("");
+    setSuccess("");
+
+    const uniqueOk = await verifyUnique(draft.unique);
+    if (!uniqueOk) return;
+
     if (!draft.reg_date) {
       setError("Registration date is required.");
       return;
@@ -166,8 +198,13 @@ export function RegisterPage() {
                 required
                 placeholder="e.g. PID-1001"
                 value={draft.unique}
+                aria-invalid={Boolean(uniqueError)}
                 onChange={(e) => update("unique", e.target.value)}
+                onBlur={() => {
+                  if (draft.unique.trim()) void verifyUnique(draft.unique);
+                }}
               />
+              {uniqueError ? <span className="field-error">{uniqueError}</span> : null}
             </div>
             <div className="field">
               <label htmlFor="reg_date">Registration date</label>
@@ -232,8 +269,13 @@ export function RegisterPage() {
               </select>
             </div>
             <div className="actions" style={{ gridColumn: "1 / -1" }}>
-              <button className="btn btn-primary" type="button" onClick={goToConfirm}>
-                Continue to confirm
+              <button
+                className="btn btn-primary"
+                type="button"
+                onClick={() => void goToConfirm()}
+                disabled={checkingUnique || Boolean(uniqueError)}
+              >
+                {checkingUnique ? "Checking Patient Id…" : "Continue to confirm"}
               </button>
             </div>
           </div>
