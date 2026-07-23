@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { ApiError, api } from "../api/client";
+import { ApiError, api, getRememberedEmail, setRememberedEmail } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 import { AuthLayout } from "../components/AuthLayout";
 import { PasswordField } from "../components/PasswordField";
@@ -12,14 +12,16 @@ export function LoginPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
+  const [remember, setRemember] = useState(true);
+  const [email, setEmail] = useState(() => getRememberedEmail());
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
 
   if (token) return <Navigate to="/register" replace />;
 
-  function validate(email: string, password: string) {
+  function validate(nextEmail: string, password: string) {
     const next: { email?: string; password?: string } = {};
-    if (!email.trim()) next.email = "Email is required.";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = "Enter a valid email address.";
+    if (!nextEmail.trim()) next.email = "Email is required.";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(nextEmail)) next.email = "Enter a valid email address.";
     if (!password) next.password = "Password is required.";
     else if (mode === "signup" && password.length < 6) {
       next.password = "Password must be at least 6 characters.";
@@ -33,16 +35,17 @@ export function LoginPage() {
     setError("");
     setSuccess("");
     const fd = new FormData(e.currentTarget);
-    const email = String(fd.get("email") || "").trim();
+    const nextEmail = String(fd.get("email") || "").trim();
     const password = String(fd.get("password") || "");
+    const keepSignedIn = mode === "signup" ? true : remember;
 
-    if (!validate(email, password)) return;
+    if (!validate(nextEmail, password)) return;
 
     setLoading(true);
     try {
       if (mode === "signup") {
         await api.signup({
-          email,
+          email: nextEmail,
           password,
           firstname: String(fd.get("firstname") || "").trim(),
           lastname: String(fd.get("lastname") || "").trim(),
@@ -50,14 +53,17 @@ export function LoginPage() {
         setSuccess("Account created successfully. Signing you in…");
       }
 
-      const data = await api.signin({ email, password });
+      const data = await api.signin({ email: nextEmail, password });
 
       if (mode === "signin") {
         setSuccess(`Signed in successfully. Welcome back${data.name ? `, ${data.name}` : ""}.`);
       }
 
+      if (keepSignedIn) setRememberedEmail(nextEmail);
+      else setRememberedEmail(null);
+
       await new Promise((resolve) => window.setTimeout(resolve, 900));
-      login(data.access_token, data.name);
+      login(data.access_token, data.name, keepSignedIn);
       navigate("/register", { replace: true });
     } catch (err) {
       if (err instanceof ApiError) {
@@ -119,6 +125,8 @@ export function LoginPage() {
             name="email"
             type="email"
             required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="you@clinic.com"
             autoComplete="username"
             aria-invalid={Boolean(fieldErrors.email)}
@@ -138,7 +146,15 @@ export function LoginPage() {
         />
 
         {mode === "signin" ? (
-          <div className="auth-links" style={{ gridColumn: "1 / -1" }}>
+          <div className="auth-row" style={{ gridColumn: "1 / -1" }}>
+            <label className="remember-me">
+              <input
+                type="checkbox"
+                checked={remember}
+                onChange={(e) => setRemember(e.target.checked)}
+              />
+              <span>Remember me</span>
+            </label>
             <Link to="/forgot-password">Forgot password?</Link>
           </div>
         ) : null}

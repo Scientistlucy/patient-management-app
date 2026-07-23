@@ -6,12 +6,12 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { getToken, setToken } from "../api/client";
+import { getStoredName, getToken, setAuthSession } from "../api/client";
 
 type AuthState = {
   token: string | null;
   name: string | null;
-  login: (token: string, name: string) => void;
+  login: (token: string, name: string, remember?: boolean) => void;
   logout: () => void;
 };
 
@@ -19,20 +19,16 @@ const AuthContext = createContext<AuthState | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setTokenState] = useState<string | null>(() => getToken());
-  const [name, setName] = useState<string | null>(
-    () => localStorage.getItem("patient_chart_name"),
-  );
+  const [name, setName] = useState<string | null>(() => getStoredName());
 
-  const login = useCallback((nextToken: string, nextName: string) => {
-    setToken(nextToken);
-    localStorage.setItem("patient_chart_name", nextName);
+  const login = useCallback((nextToken: string, nextName: string, remember = true) => {
+    setAuthSession(nextToken, nextName, remember);
     setTokenState(nextToken);
     setName(nextName);
   }, []);
 
   const logout = useCallback(() => {
-    setToken(null);
-    localStorage.removeItem("patient_chart_name");
+    setAuthSession(null, null);
     setTokenState(null);
     setName(null);
   }, []);

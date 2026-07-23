@@ -361,15 +361,44 @@ button {
   margin-top: -0.25rem;
 }
 
-.auth-links a {
+.auth-links a,
+.auth-row a {
   color: var(--signal-deep);
   font-weight: 600;
   font-size: 0.9rem;
   border-bottom: 1px solid transparent;
 }
 
-.auth-links a:hover {
+.auth-links a:hover,
+.auth-row a:hover {
   border-bottom-color: var(--signal);
+}
+
+.auth-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: -0.25rem;
+  flex-wrap: wrap;
+}
+
+.remember-me {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink-soft, #3d4f4c);
+  cursor: pointer;
+  user-select: none;
+}
+
+.remember-me input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--signal-deep);
+  cursor: pointer;
 }
 
 .bmi-readout {

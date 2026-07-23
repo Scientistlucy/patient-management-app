@@ -1,5 +1,7 @@
 const API_BASE = import.meta.env.VITE_API_BASE ?? "http://localhost:4000/api";
 const TOKEN_KEY = "patient_chart_token";
+const NAME_KEY = "patient_chart_name";
+const REMEMBER_EMAIL_KEY = "patient_chart_remember_email";
 
 export type ApiResponse<T> = {
   message: string;
@@ -8,13 +10,38 @@ export type ApiResponse<T> = {
   data: T;
 };
 
-export function getToken(): string | null {
-  return localStorage.getItem(TOKEN_KEY);
+function authStore(persistent: boolean): Storage {
+  return persistent ? localStorage : sessionStorage;
 }
 
-export function setToken(token: string | null) {
-  if (!token) localStorage.removeItem(TOKEN_KEY);
-  else localStorage.setItem(TOKEN_KEY, token);
+export function getToken(): string | null {
+  return localStorage.getItem(TOKEN_KEY) ?? sessionStorage.getItem(TOKEN_KEY);
+}
+
+export function getStoredName(): string | null {
+  return localStorage.getItem(NAME_KEY) ?? sessionStorage.getItem(NAME_KEY);
+}
+
+export function setAuthSession(token: string | null, name: string | null, remember = true) {
+  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(NAME_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(NAME_KEY);
+
+  if (!token) return;
+
+  const store = authStore(remember);
+  store.setItem(TOKEN_KEY, token);
+  if (name) store.setItem(NAME_KEY, name);
+}
+
+export function getRememberedEmail(): string {
+  return localStorage.getItem(REMEMBER_EMAIL_KEY) ?? "";
+}
+
+export function setRememberedEmail(email: string | null) {
+  if (!email) localStorage.removeItem(REMEMBER_EMAIL_KEY);
+  else localStorage.setItem(REMEMBER_EMAIL_KEY, email);
 }
 
 export class ApiError extends Error {
@@ -47,8 +74,7 @@ async function request<T>(
   const json = (await res.json().catch(() => null)) as ApiResponse<T> | null;
 
   if (res.status === 401 && auth) {
-    setToken(null);
-    localStorage.removeItem("patient_chart_name");
+    setAuthSession(null, null);
     if (window.location.pathname !== "/login") {
       window.location.assign("/login");
     }
