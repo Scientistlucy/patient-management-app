@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int       @id @default(autoincrement())
+  email             String    @unique
+  firstname         String
+  lastname          String
+  passwordHash      String
+  resetToken        String?   @map("reset_token")
+  resetTokenExpires DateTime? @map("reset_token_expires")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  @@map("users")
+}
+
+model Patient {
+  id        Int      @id @default(autoincrement())
+  unique    String   @unique
+  firstname String
+  lastname  String
+  dob       DateTime @db.Date
+  gender    String
+  regDate   DateTime @map("reg_date") @db.Date
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  vitals    Vital[]
+  visits    Visit[]
+
+  @@map("patients")
+}
+
+model Vital {
+  id        Int      @id @default(autoincrement())
+  patientId Int      @map("patient_id")
+  visitDate DateTime @map("visit_date") @db.Date
+  height    Float
+  weight    Float
+  bmi       Float
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  visits    Visit[]
+
+  @@unique([patientId, visitDate])
+  @@map("vitals")
+}
+
+model Visit {
+  id            Int      @id @default(autoincrement())
+  patientId     Int      @map("patient_id")
+  vitalId       Int      @map("vital_id")
+  visitDate     DateTime @map("visit_date") @db.Date
+  generalHealth String   @map("general_health")
+  onDiet        String?  @map("on_diet")
+  onDrugs       String?  @map("on_drugs")
+  comments      String
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+  patient       Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  vital         Vital    @relation(fields: [vitalId], references: [id], onDelete: Cascade)
+
+  @@unique([patientId, visitDate])
+  @@map("visits")
+}
