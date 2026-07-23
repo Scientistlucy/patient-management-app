@@ -82,8 +82,8 @@ export function LoginPage() {
       <h2 className="panel-title">{mode === "signin" ? "Sign in" : "Create account"}</h2>
       <p className="panel-copy">
         {mode === "signin"
-          ? "Continue to the intake desk to register patients and chart visits."
-          : "Create an account to start patient registration and charting."}
+          ? "Sign in to continue charting."
+          : "Create an account to start charting."}
       </p>
 
       {error ? (

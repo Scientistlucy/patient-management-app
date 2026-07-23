@@ -25,8 +25,7 @@ export function AuthLayout({ children }: Props) {
               <span> before the queue.</span>
             </h1>
             <p className="auth-brand-copy">
-              One clinician desk for intake, vitals, and BMI-guided assessment —
-              without hunting through paper or scattered screens.
+              Intake, vitals, and BMI-guided assessment at one desk.
             </p>
 
             <div className="auth-console" aria-hidden="true">
