@@ -78,14 +78,8 @@ visitsRouter.post("/view", async (req, res) => {
     ? parseDateOnly(parsed.data.visit_date)
     : null;
 
-  // Keep the live listing populated for demos (idempotent; also clears old SEED* ids).
-  const seedPrefixCount = await prisma.patient.count({
-    where: { unique: { startsWith: "SEED" } },
-  });
-  const patientCount = await prisma.patient.count();
-  if (patientCount < 20 || seedPrefixCount > 0) {
-    await seedDemoPatients(prisma);
-  }
+  // Always reconcile demo census (removes legacy SEED* ids, ensures 1001+ rows).
+  await seedDemoPatients(prisma);
 
   const patients = await prisma.patient.findMany({
     include: {

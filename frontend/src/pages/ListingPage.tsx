@@ -37,6 +37,13 @@ function isPlausibleBmi(bmi: number) {
   return Number.isFinite(bmi) && bmi >= 10 && bmi <= 80;
 }
 
+/** Hide legacy SEED prefix until Railway finishes replacing those rows. */
+function displayPatientId(unique: string) {
+  const match = unique.match(/^SEED0*(\d+)$/i);
+  if (!match) return unique;
+  return String(1000 + Number(match[1]));
+}
+
 export function ListingPage() {
   const [rows, setRows] = useState<Row[]>([]);
   const [stats, setStats] = useState<Stats>(emptyStats);
@@ -71,7 +78,12 @@ export function ListingPage() {
           // Older API builds may not expose seed-demo yet; listing still works.
         }
       }
-      setRows(data.rows);
+      setRows(
+        data.rows.map((row) => ({
+          ...row,
+          unique: displayPatientId(row.unique),
+        })),
+      );
       setStats(data.stats);
     } catch (err) {
       setError(err instanceof ApiError ? err.message : "Failed to load listing");
@@ -115,7 +127,8 @@ export function ListingPage() {
       if (!q) return true;
       return (
         row.name.toLowerCase().includes(q) ||
-        row.unique.toLowerCase().includes(q)
+        row.unique.toLowerCase().includes(q) ||
+        displayPatientId(row.unique).toLowerCase().includes(q)
       );
     });
   }, [rows, search, status, gender, ageMin, ageMax]);
@@ -132,7 +145,8 @@ export function ListingPage() {
       if (!q) return true;
       return (
         row.name.toLowerCase().includes(q) ||
-        row.unique.toLowerCase().includes(q)
+        row.unique.toLowerCase().includes(q) ||
+        displayPatientId(row.unique).toLowerCase().includes(q)
       );
     });
   }, [rows, search, gender, ageMin, ageMax]);
