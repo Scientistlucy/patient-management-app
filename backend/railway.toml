@@ -3,6 +3,6 @@ builder = "NIXPACKS"
 buildCommand = "npm install && npx prisma generate && npm run build"
 
 [deploy]
-startCommand = "npx prisma db push --skip-generate && node dist/index.js"
+startCommand = "sh -c 'if [ -z \"$DATABASE_URL\" ] && [ -n \"$DATABASE_PUBLIC_URL\" ]; then export DATABASE_URL=\"$DATABASE_PUBLIC_URL\"; fi; if [ -z \"$DATABASE_URL\" ]; then echo \"Missing DATABASE_URL in runtime env\"; env | cut -d= -f1 | sort; exit 1; fi; npx prisma db push --skip-generate && node dist/index.js'"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
