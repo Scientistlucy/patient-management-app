@@ -80,12 +80,6 @@ export function AuthLayout({ children }: Props) {
               </ol>
             </div>
           </div>
-
-          <footer className="auth-brand-foot">
-            <span>Ward intake desk</span>
-            <span className="auth-brand-foot-dot" />
-            <span>Bearer-secured session</span>
-          </footer>
         </div>
       </aside>
 
