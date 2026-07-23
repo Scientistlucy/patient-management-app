@@ -1,11 +1,15 @@
 export function calculateAge(dob: Date, onDate = new Date()): number {
+  // Always use calendar date parts in UTC to avoid timezone off-by-one (e.g. UTC+3).
   const year = dob.getUTCFullYear();
   const month = dob.getUTCMonth();
   const day = dob.getUTCDate();
 
-  let age = onDate.getFullYear() - year;
-  const m = onDate.getMonth() - month;
-  if (m < 0 || (m === 0 && onDate.getDate() < day)) age -= 1;
+  const nowY = onDate.getUTCFullYear();
+  const nowM = onDate.getUTCMonth();
+  const nowD = onDate.getUTCDate();
+
+  let age = nowY - year;
+  if (nowM < month || (nowM === month && nowD < day)) age -= 1;
   return Math.max(0, age);
 }
 

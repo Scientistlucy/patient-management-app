@@ -349,6 +349,12 @@ button {
   font-size: 0.82rem;
 }
 
+.field-hint {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
 .auth-links {
   display: flex;
   justify-content: flex-end;

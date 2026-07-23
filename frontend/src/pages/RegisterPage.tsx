@@ -1,8 +1,8 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiError, api } from "../api/client";
 import { ProgressSteps } from "../components/ProgressSteps";
-import { todayISO } from "../utils/bmi";
+import { ageFromDob, todayISO } from "../utils/bmi";
 
 type RegStep = 1 | 2;
 
@@ -30,6 +30,7 @@ export function RegisterPage() {
   const [draft, setDraft] = useState<Draft>(emptyDraft);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const calculatedAge = useMemo(() => ageFromDob(draft.dob), [draft.dob]);
 
   function update<K extends keyof Draft>(key: K, value: Draft[K]) {
     setDraft((prev) => ({ ...prev, [key]: value }));
@@ -51,6 +52,10 @@ export function RegisterPage() {
     }
     if (!draft.dob) {
       setError("Date of birth is required.");
+      return;
+    }
+    if (calculatedAge == null) {
+      setError("Enter a valid date of birth that is not in the future.");
       return;
     }
     if (!draft.gender) {
@@ -181,9 +186,17 @@ export function RegisterPage() {
                 name="dob"
                 type="date"
                 required
+                max={todayISO()}
                 value={draft.dob}
                 onChange={(e) => update("dob", e.target.value)}
               />
+              <span className="field-hint">
+                {draft.dob
+                  ? calculatedAge != null
+                    ? `Age: ${calculatedAge} year${calculatedAge === 1 ? "" : "s"}`
+                    : "Enter a valid past date of birth"
+                  : "Age will calculate automatically"}
+              </span>
             </div>
             <div className="field">
               <label htmlFor="gender">Gender</label>
@@ -230,6 +243,12 @@ export function RegisterPage() {
               <div>
                 <span className="confirm-label">Date of birth</span>
                 <strong>{draft.dob}</strong>
+              </div>
+              <div>
+                <span className="confirm-label">Age</span>
+                <strong>
+                  {calculatedAge != null ? `${calculatedAge} years` : "—"}
+                </strong>
               </div>
               <div>
                 <span className="confirm-label">Gender</span>
