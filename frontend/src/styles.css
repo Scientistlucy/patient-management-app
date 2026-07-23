@@ -332,7 +332,7 @@ button {
   padding: 0.85rem 1rem;
   border: 1px dashed var(--ink-soft);
   border-radius: 8px;
-  background: linear-gradient(90deg, rgba(43, 187, 173, 0.12), transparent 55%);
+  background: rgba(43, 187, 173, 0.12);
 }
 
 .wristband-label {
