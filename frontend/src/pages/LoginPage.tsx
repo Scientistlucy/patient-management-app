@@ -78,12 +78,12 @@ export function LoginPage() {
 
   return (
     <AuthLayout>
-      <p className="panel-kicker">Access</p>
+      <p className="panel-kicker">Clinician access</p>
       <h2 className="panel-title">{mode === "signin" ? "Sign in" : "Create account"}</h2>
       <p className="panel-copy">
         {mode === "signin"
-          ? "Sign in to continue patient registration and charting."
-          : "Create a clinician account to start using Patient Chart."}
+          ? "Continue to the intake desk to register patients and chart visits."
+          : "Create an account to start patient registration and charting."}
       </p>
 
       {error ? (

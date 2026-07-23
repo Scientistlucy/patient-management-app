@@ -21,47 +21,71 @@ export function AuthLayout({ children }: Props) {
 
           <div className="auth-brand-main">
             <h1 className="auth-brand-title">
-              Keep the visit chart
-              <span> within reach.</span>
+              Desk chart ready
+              <span> before the queue.</span>
             </h1>
             <p className="auth-brand-copy">
-              Register the patient, capture vitals, and route the assessment from
-              one calm clinical desk.
+              One clinician desk for intake, vitals, and BMI-guided assessment —
+              without hunting through paper or scattered screens.
             </p>
 
-            <div className="auth-instrument" aria-hidden="true">
-              <div className="auth-instrument-head">
-                <span>Visit strip</span>
-                <span className="auth-instrument-mono">BMI auto</span>
+            <div className="auth-console" aria-hidden="true">
+              <div className="auth-wrist">
+                <div>
+                  <span className="auth-wrist-label">Active patient</span>
+                  <strong className="auth-wrist-id">PID-1042</strong>
+                </div>
+                <span className="auth-wrist-name">Amina Otieno</span>
               </div>
-              <div className="auth-instrument-body">
-                <svg className="auth-instrument-wave" viewBox="0 0 280 72" fill="none">
+
+              <div className="auth-console-board">
+                <div className="auth-readout">
+                  <span>Height</span>
+                  <strong>168 cm</strong>
+                </div>
+                <div className="auth-readout">
+                  <span>Weight</span>
+                  <strong>61.4 kg</strong>
+                </div>
+                <div className="auth-readout auth-readout-bmi">
+                  <span>BMI</span>
+                  <strong>21.8</strong>
+                  <em>Normal</em>
+                </div>
+              </div>
+
+              <div className="auth-trace">
+                <svg viewBox="0 0 320 64" fill="none" className="auth-trace-svg">
                   <path
-                    d="M4 48H38L48 18L62 58L76 36L92 42H128L140 12L156 60L172 28L188 40H276"
+                    className="auth-trace-line"
+                    d="M0 36 H42 L52 14 L64 52 L78 28 L96 36 H148 L160 10 L176 54 L190 24 L208 36 H320"
                     stroke="currentColor"
-                    strokeWidth="2.4"
+                    strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   />
                 </svg>
-                <div className="auth-instrument-meta">
-                  <div>
-                    <span className="auth-instrument-label">Path</span>
-                    <strong>Register → Vitals → Assess</strong>
-                  </div>
-                  <div>
-                    <span className="auth-instrument-label">Routing</span>
-                    <strong>BMI ≤ 25 / BMI &gt; 25</strong>
-                  </div>
-                </div>
+                <span className="auth-trace-caption">Live vitals trace</span>
               </div>
+
+              <ol className="auth-rail">
+                <li className="is-done">
+                  <span>01</span> Register
+                </li>
+                <li className="is-active">
+                  <span>02</span> Vitals
+                </li>
+                <li>
+                  <span>03</span> Assess
+                </li>
+              </ol>
             </div>
           </div>
 
           <footer className="auth-brand-foot">
-            <span>Intake desk</span>
+            <span>Ward intake desk</span>
             <span className="auth-brand-foot-dot" />
-            <span>Secure clinician access</span>
+            <span>Bearer-secured session</span>
           </footer>
         </div>
       </aside>
