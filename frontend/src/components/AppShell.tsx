@@ -41,18 +41,19 @@ export function AppShell() {
   return (
     <div className="app-shell">
       <header className="topbar">
-        <div className="brand">
-          <BrandLogo className="brand-logo-nav" />
-          <div className="brand-text">
-            <span className="brand-mark">Clinical Instrument</span>
-            <span className="brand-title">Patient Chart</span>
+        <div className="topbar-inner">
+          <div className="brand">
+            <BrandLogo className="brand-logo-nav" />
+            <div className="brand-text">
+              <span className="brand-mark">Clinical Instrument</span>
+              <span className="brand-title">Patient Chart</span>
+            </div>
           </div>
-        </div>
-        <nav className="nav">
-          <NavLink to="/register">Registration</NavLink>
-          <NavLink to="/listing">Patient Listing</NavLink>
 
-          <span className="nav-sep" aria-hidden="true" />
+          <nav className="nav" aria-label="Primary">
+            <NavLink to="/register">Registration</NavLink>
+            <NavLink to="/listing">Patient Listing</NavLink>
+          </nav>
 
           <div className="nav-user">
             <span
@@ -70,7 +71,7 @@ export function AppShell() {
               Sign out
             </button>
           </div>
-        </nav>
+        </div>
       </header>
       <Outlet />
 
