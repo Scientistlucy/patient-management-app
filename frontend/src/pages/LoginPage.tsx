@@ -171,7 +171,7 @@ export function LoginPage() {
               setFieldErrors({});
             }}
           >
-            {mode === "signin" ? "Need an account?" : "Have an account?"}
+            {mode === "signin" ? "Create an account" : "Have an account?"}
           </button>
         </div>
       </form>
