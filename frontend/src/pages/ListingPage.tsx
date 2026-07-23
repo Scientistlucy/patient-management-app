@@ -518,6 +518,7 @@ export function ListingPage() {
             <table className="data">
               <thead>
                 <tr>
+                  <th className="num-col">#</th>
                   <th>Patient Id</th>
                   <th>Name</th>
                   <th>Gender</th>
@@ -530,19 +531,20 @@ export function ListingPage() {
               <tbody>
                 {loading ? (
                   <tr>
-                    <td colSpan={7} className="empty">
+                    <td colSpan={8} className="empty">
                       Loading…
                     </td>
                   </tr>
                 ) : filtered.length === 0 ? (
                   <tr>
-                    <td colSpan={7} className="empty">
+                    <td colSpan={8} className="empty">
                       No patients match these filters.
                     </td>
                   </tr>
                 ) : (
-                  pagedRows.map((row) => (
+                  pagedRows.map((row, index) => (
                     <tr key={`${row.patient_id}-${row.visit_date ?? "none"}`}>
+                      <td className="mono num-col">{pageStart + index}</td>
                       <td className="mono">{row.unique}</td>
                       <td className="name-cell">
                         {row.name

@@ -1551,6 +1551,13 @@ table.data td {
   padding: 0.95rem 1rem;
 }
 
+.listing-table .num-col {
+  width: 3rem;
+  text-align: center;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
 .listing-table table.data td {
   padding: 0.95rem 1rem;
   vertical-align: middle;
