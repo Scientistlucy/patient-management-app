@@ -22,16 +22,7 @@ export function VitalsPage() {
   const [bmi, setBmi] = useState<number | null>(null);
   const [tick, setTick] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const flash = sessionStorage.getItem("patient_chart_flash");
-    if (flash) {
-      sessionStorage.removeItem("patient_chart_flash");
-      setSuccess(flash);
-    }
-  }, []);
 
   useEffect(() => {
     const next = calcBmi(Number(height), Number(weight));
@@ -130,11 +121,6 @@ export function VitalsPage() {
         </div>
 
         {error ? <div className="alert alert-error">{error}</div> : null}
-        {success ? (
-          <div className="alert alert-success" role="status">
-            {success}
-          </div>
-        ) : null}
 
         <form onSubmit={onSubmit} className="form-grid">
           <div className="field full">

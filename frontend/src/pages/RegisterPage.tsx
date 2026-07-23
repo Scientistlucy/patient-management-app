@@ -121,10 +121,6 @@ export function RegisterPage() {
       setSuccess(
         `Patient ${payload.firstname} ${payload.lastname} registered successfully. Continuing to vitals…`,
       );
-      sessionStorage.setItem(
-        "patient_chart_flash",
-        `Patient registered successfully (${payload.unique}).`,
-      );
       await new Promise((resolve) => window.setTimeout(resolve, 1000));
       navigate(`/vitals/${data.id}`, {
         state: {
