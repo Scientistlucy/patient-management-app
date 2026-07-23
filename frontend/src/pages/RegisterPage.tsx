@@ -190,13 +190,6 @@ export function RegisterPage() {
                 value={draft.dob}
                 onChange={(e) => update("dob", e.target.value)}
               />
-              <span className="field-hint">
-                {draft.dob
-                  ? calculatedAge != null
-                    ? `Age: ${calculatedAge} year${calculatedAge === 1 ? "" : "s"}`
-                    : "Enter a valid past date of birth"
-                  : "Age will calculate automatically"}
-              </span>
             </div>
             <div className="field">
               <label htmlFor="gender">Gender</label>
@@ -243,12 +236,6 @@ export function RegisterPage() {
               <div>
                 <span className="confirm-label">Date of birth</span>
                 <strong>{draft.dob}</strong>
-              </div>
-              <div>
-                <span className="confirm-label">Age</span>
-                <strong>
-                  {calculatedAge != null ? `${calculatedAge} years` : "—"}
-                </strong>
               </div>
               <div>
                 <span className="confirm-label">Gender</span>
