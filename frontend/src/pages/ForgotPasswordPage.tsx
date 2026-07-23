@@ -41,8 +41,8 @@ export function ForgotPasswordPage() {
       <p className="panel-kicker">Account recovery</p>
       <h2 className="panel-title">Forgot password</h2>
       <p className="panel-copy">
-        Enter your account email. We try to email a reset link. If sending fails, a
-        clickable link will appear here.
+        Enter your account email. We will try to send a reset link, and also show
+        one here so you can continue right away.
       </p>
 
       {error ? (
@@ -58,7 +58,9 @@ export function ForgotPasswordPage() {
 
       {resetUrl ? (
         <div className="alert alert-success" role="status">
-          <p style={{ margin: "0 0 0.75rem" }}>Open this link to create your new password:</p>
+          <p style={{ margin: "0 0 0.75rem" }}>
+            Open this link to create your new password (valid for 30 minutes):
+          </p>
           <a href={resetUrl} style={{ wordBreak: "break-all", fontWeight: 600 }}>
             {resetUrl}
           </a>

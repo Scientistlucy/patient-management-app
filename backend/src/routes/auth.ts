@@ -110,11 +110,22 @@ authRouter.post("/forgot-password", async (req, res) => {
     data: { resetToken, resetTokenExpires },
   });
 
-  const appUrl = (process.env.APP_URL || "http://localhost:5173").replace(/\/$/, "");
+  // Prefer the browser Origin so production links hit Vercel, not localhost.
+  const originHeader = req.get("origin");
+  const fromOrigin =
+    originHeader && /^https?:\/\//i.test(originHeader)
+      ? originHeader.replace(/\/$/, "")
+      : null;
+  const appUrl = (
+    fromOrigin ||
+    process.env.APP_URL ||
+    "http://localhost:5173"
+  ).replace(/\/$/, "");
   const resetUrl = `${appUrl}/reset-password?email=${encodeURIComponent(email)}&token=${encodeURIComponent(resetToken)}`;
 
-  // Try real email first. If Gmail rejects credentials, still return the link
-  // so the reset flow works for local/demo use.
+  let emailed = false;
+  let mailError = "";
+
   if (isEmailConfigured()) {
     try {
       await sendPasswordResetEmail({
@@ -122,19 +133,27 @@ authRouter.post("/forgot-password", async (req, res) => {
         name: user.firstname,
         resetUrl,
       });
-      return ok(res, {
-        message: "Password reset link sent. Check your email inbox (and spam folder).",
-        email,
-        emailed: true,
-      });
+      emailed = true;
     } catch (err) {
+      mailError = err instanceof Error ? err.message : "Email send failed";
       console.error("Failed to send reset email:", err);
     }
   }
 
+  if (emailed) {
+    return ok(res, {
+      message:
+        "Password reset link sent. Check your inbox (and spam). You can also use the link below.",
+      email,
+      emailed: true,
+      reset_url: resetUrl,
+    });
+  }
+
   return ok(res, {
-    message:
-      "Gmail could not send the email (SMTP login rejected). Use the reset link below to create a new password.",
+    message: mailError
+      ? "We could not send email right now. Use the reset link below to create a new password."
+      : "Email is not configured on the server. Use the reset link below to create a new password.",
     email,
     emailed: false,
     reset_url: resetUrl,

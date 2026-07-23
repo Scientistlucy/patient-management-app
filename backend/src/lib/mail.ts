@@ -1,20 +1,11 @@
 import nodemailer from "nodemailer";
 
-function requireEnv(name: string): string {
-  const value = process.env[name];
-  if (!value) {
-    throw new Error(`Missing ${name} in backend/.env`);
-  }
-  return value;
-}
-
 export function isEmailConfigured(): boolean {
   return Boolean(
     process.env.SMTP_HOST &&
       process.env.SMTP_USER &&
       process.env.SMTP_PASS &&
-      process.env.SMTP_FROM &&
-      process.env.APP_URL,
+      process.env.SMTP_FROM,
   );
 }
 
@@ -25,24 +16,26 @@ export async function sendPasswordResetEmail(params: {
 }) {
   if (!isEmailConfigured()) {
     throw new Error(
-      "Email is not configured. Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM, and APP_URL to backend/.env",
+      "Email is not configured. Add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, and SMTP_FROM.",
     );
   }
 
+  const host = process.env.SMTP_HOST!;
   const port = Number(process.env.SMTP_PORT || 587);
-  const user = requireEnv("SMTP_USER");
-  const pass = requireEnv("SMTP_PASS").replace(/\s+/g, "");
+  const user = process.env.SMTP_USER!;
+  const pass = process.env.SMTP_PASS!.replace(/\s+/g, "");
+  const from = process.env.SMTP_FROM!;
 
   const transporter = nodemailer.createTransport({
-    service: "gmail",
-    host: requireEnv("SMTP_HOST"),
+    host,
     port,
     secure: port === 465,
+    requireTLS: port === 587,
     auth: { user, pass },
   });
 
   await transporter.sendMail({
-    from: requireEnv("SMTP_FROM"),
+    from,
     to: params.to,
     subject: "Patient Chart — reset your password",
     text: [
