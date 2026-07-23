@@ -713,18 +713,20 @@ button {
 .auth-wrist {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: center;
   gap: 1rem;
-  padding: 0.95rem 1.05rem;
-  background: linear-gradient(90deg, rgba(42, 157, 148, 0.18), rgba(42, 157, 148, 0.05));
-  border-bottom: 1px solid rgba(232, 242, 240, 0.1);
+  margin: 0.85rem;
+  padding: 0.85rem 1rem;
+  border: 1px dashed rgba(232, 242, 240, 0.35);
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(42, 157, 148, 0.2), transparent 55%);
 }
 
 .auth-wrist-label {
   display: block;
   font-family: var(--font-mono);
   font-size: 0.66rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: rgba(167, 201, 196, 0.88);
   margin-bottom: 0.28rem;
@@ -736,12 +738,6 @@ button {
   font-weight: 700;
   letter-spacing: 0.04em;
   color: #eef7f5;
-}
-
-.auth-wrist-name {
-  font-size: 0.92rem;
-  color: rgba(232, 242, 240, 0.7);
-  padding-bottom: 0.15rem;
 }
 
 .auth-console-board {

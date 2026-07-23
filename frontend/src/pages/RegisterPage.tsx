@@ -1,7 +1,6 @@
 import { FormEvent, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiError, api } from "../api/client";
-import { BrandLogo } from "../components/BrandLogo";
 import { ProgressSteps } from "../components/ProgressSteps";
 import { ageFromDob, todayISO } from "../utils/bmi";
 
@@ -132,14 +131,8 @@ export function RegisterPage() {
   return (
     <main className="page">
       <section className="chart-panel">
-        <div className="page-brand-row">
-          <BrandLogo className="page-brand-logo" />
-          <div>
-            <p className="panel-kicker">Intake</p>
-            <h1 className="panel-title">Patient registration</h1>
-          </div>
-        </div>
         <ProgressSteps current="register" />
+        <h1 className="panel-title">Patient registration</h1>
 
         <div className="substeps" aria-label="Registration steps">
           <button

@@ -114,7 +114,7 @@ export function VitalsPage() {
 
         <div className="wristband">
           <div>
-            <div className="wristband-label">Active patient</div>
+            <div className="wristband-label">Patient ID</div>
             <div className="wristband-id">{state.unique || `#${patientId}`}</div>
           </div>
           <div className="muted">{state.name}</div>

@@ -31,10 +31,9 @@ export function AuthLayout({ children }: Props) {
             <div className="auth-console" aria-hidden="true">
               <div className="auth-wrist">
                 <div>
-                  <span className="auth-wrist-label">Active patient</span>
+                  <span className="auth-wrist-label">Patient ID</span>
                   <strong className="auth-wrist-id">PID-1042</strong>
                 </div>
-                <span className="auth-wrist-name">Amina Otieno</span>
               </div>
 
               <div className="auth-console-board">
