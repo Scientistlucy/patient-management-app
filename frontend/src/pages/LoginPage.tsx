@@ -78,7 +78,6 @@ export function LoginPage() {
 
   return (
     <AuthLayout>
-      <p className="panel-kicker">Account</p>
       <h2 className="panel-title">{mode === "signin" ? "Sign in" : "Create account"}</h2>
       <p className="panel-copy">
         {mode === "signin"
