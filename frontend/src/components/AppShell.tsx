@@ -45,7 +45,7 @@ export function AppShell() {
           <div className="brand">
             <BrandLogo className="brand-logo-nav" />
             <div className="brand-text">
-              <span className="brand-mark">Clinical Instrument</span>
+              <span className="brand-mark">Clinical charting</span>
               <span className="brand-title">Patient Chart</span>
             </div>
           </div>
