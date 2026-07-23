@@ -1,8 +1,8 @@
 :root {
   --ink: #0a3d40;
   --ink-soft: #14555a;
-  --signal: #2bbbad;
-  --signal-deep: #1a8f84;
+  --signal: #2a9d94;
+  --signal-deep: #1a7a74;
   --paper: #f3f6f5;
   --paper-elevated: #ffffff;
   --line: #c5d0ce;
@@ -90,8 +90,53 @@ button {
 
 .brand {
   display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-text {
+  display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.brand-logo,
+.brand-logo-nav,
+.page-brand-logo,
+.auth-logo-img {
+  display: block;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 6px 16px rgba(10, 61, 64, 0.14);
+}
+
+.brand-logo-nav {
+  width: 2.35rem;
+  height: 2.35rem;
+}
+
+.page-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-bottom: 0.85rem;
+}
+
+.page-brand-logo {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 12px;
+}
+
+.page-brand-row .panel-title {
+  margin: 0;
+}
+
+.page-brand-row .panel-kicker {
+  margin-bottom: 0.2rem;
 }
 
 .brand-mark {
@@ -507,20 +552,40 @@ button {
   align-items: center;
   justify-content: center;
   padding: clamp(1.75rem, 4vw, 3.5rem);
-  color: #f5fffd;
+  color: #eef7f5;
   background:
-    radial-gradient(circle at 18% 20%, rgba(43, 187, 173, 0.35), transparent 42%),
-    radial-gradient(circle at 82% 78%, rgba(245, 255, 253, 0.08), transparent 36%),
-    linear-gradient(160deg, #0a3d40 0%, #14555a 48%, #0f4a4e 100%);
+    linear-gradient(165deg, #082f32 0%, #0a3d40 42%, #0f4f52 72%, #135a5c 100%);
   position: relative;
   overflow: hidden;
+}
+
+.auth-brand-glow {
+  position: absolute;
+  inset: -20% -10% auto auto;
+  width: min(520px, 80%);
+  height: min(520px, 80%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(26, 143, 132, 0.28) 0%, transparent 68%);
+  pointer-events: none;
+}
+
+.auth-brand-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image:
+    linear-gradient(rgba(238, 247, 245, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(238, 247, 245, 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.55), transparent 88%);
+  pointer-events: none;
 }
 
 .auth-brand::after {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.07;
+  opacity: 0.05;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   pointer-events: none;
 }
@@ -532,30 +597,37 @@ button {
   animation: rise 480ms ease both;
 }
 
-.auth-logo {
+.auth-logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  margin-bottom: 1.6rem;
+}
+
+.auth-logo-img {
   width: 3.4rem;
   height: 3.4rem;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  margin-bottom: 1.35rem;
-  background: rgba(43, 187, 173, 0.22);
-  border: 1px solid rgba(43, 187, 173, 0.55);
-  color: #7ee8dc;
-  font-family: var(--font-mono);
-  font-size: 1rem;
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(238, 247, 245, 0.16);
+}
+
+.auth-logo-wordmark {
+  margin: 0.15rem 0 0;
+  font-size: 1.05rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: -0.02em;
+  color: #eef7f5;
 }
 
 .auth-brand-kicker {
-  margin: 0 0 0.55rem;
+  margin: 0;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #7ee8dc;
+  color: rgba(180, 214, 210, 0.95);
 }
 
 .auth-brand-title {
@@ -564,14 +636,14 @@ button {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.05;
-  color: #f5fffd;
+  color: #eef7f5;
 }
 
 .auth-brand-copy {
   margin: 0 0 1.5rem;
   font-size: 1.05rem;
   line-height: 1.55;
-  color: rgba(245, 255, 253, 0.82);
+  color: rgba(238, 247, 245, 0.78);
   max-width: 34ch;
 }
 
@@ -587,7 +659,7 @@ button {
   position: relative;
   padding-left: 1.15rem;
   font-size: 0.92rem;
-  color: rgba(245, 255, 253, 0.78);
+  color: rgba(238, 247, 245, 0.76);
 }
 
 .auth-brand-points li::before {
@@ -598,7 +670,7 @@ button {
   width: 0.45rem;
   height: 0.45rem;
   border-radius: 999px;
-  background: var(--signal);
+  background: #7eb8b2;
 }
 
 .auth-form-pane {

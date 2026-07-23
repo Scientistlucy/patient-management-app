@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
+import { BrandLogo } from "./BrandLogo";
 
 function getInitials(name: string | null) {
   if (!name?.trim()) return "?";
@@ -34,8 +35,11 @@ export function AppShell() {
     <div className="app-shell">
       <header className="topbar">
         <div className="brand">
-          <span className="brand-mark">Clinical Instrument</span>
-          <span className="brand-title">Patient Chart</span>
+          <BrandLogo className="brand-logo-nav" />
+          <div className="brand-text">
+            <span className="brand-mark">Clinical Instrument</span>
+            <span className="brand-title">Patient Chart</span>
+          </div>
         </div>
         <nav className="nav">
           <NavLink to="/register">Registration</NavLink>

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { BrandLogo } from "./BrandLogo";
 
 type Props = {
   children: ReactNode;
@@ -16,11 +17,16 @@ export function AuthLayout({
   return (
     <div className="auth-split">
       <aside className="auth-brand" aria-label="Product introduction">
+        <div className="auth-brand-glow" aria-hidden="true" />
+        <div className="auth-brand-grid" aria-hidden="true" />
         <div className="auth-brand-inner">
-          <div className="auth-logo" aria-hidden="true">
-            PC
+          <div className="auth-logo-wrap">
+            <BrandLogo className="auth-logo-img" />
+            <div>
+              <p className="auth-brand-kicker">{kicker}</p>
+              <p className="auth-logo-wordmark">Patient Chart</p>
+            </div>
           </div>
-          <p className="auth-brand-kicker">{kicker}</p>
           <h1 className="auth-brand-title">{headline}</h1>
           <p className="auth-brand-copy">{support}</p>
           <ul className="auth-brand-points">
