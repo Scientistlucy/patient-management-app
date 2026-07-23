@@ -47,11 +47,24 @@ export function LoginPage() {
           firstname: String(fd.get("firstname") || "").trim(),
           lastname: String(fd.get("lastname") || "").trim(),
         });
-        setSuccess("Account created. Signing you in…");
+        setSuccess("Account created successfully. Signing you in…");
       }
+
       const data = await api.signin({ email, password });
+
+      if (mode === "signin") {
+        setSuccess(`Signed in successfully. Welcome back${data.name ? `, ${data.name}` : ""}.`);
+      }
+
+      const flash =
+        mode === "signup"
+          ? "Welcome! Your account was created and you are signed in."
+          : `Signed in successfully. Welcome back${data.name ? `, ${data.name}` : ""}.`;
+
+      sessionStorage.setItem("patient_chart_flash", flash);
+      await new Promise((resolve) => window.setTimeout(resolve, 900));
       login(data.access_token, data.name);
-      navigate("/register");
+      navigate("/register", { replace: true });
     } catch (err) {
       if (err instanceof ApiError) {
         setError(err.message);

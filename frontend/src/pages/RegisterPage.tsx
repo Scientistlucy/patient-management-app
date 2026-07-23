@@ -1,4 +1,4 @@
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ApiError, api } from "../api/client";
 import { ProgressSteps } from "../components/ProgressSteps";
@@ -29,8 +29,17 @@ export function RegisterPage() {
   const [step, setStep] = useState<RegStep>(1);
   const [draft, setDraft] = useState<Draft>(emptyDraft);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
   const calculatedAge = useMemo(() => ageFromDob(draft.dob), [draft.dob]);
+
+  useEffect(() => {
+    const flash = sessionStorage.getItem("patient_chart_flash");
+    if (flash) {
+      sessionStorage.removeItem("patient_chart_flash");
+      setSuccess(flash);
+    }
+  }, []);
 
   function update<K extends keyof Draft>(key: K, value: Draft[K]) {
     setDraft((prev) => ({ ...prev, [key]: value }));
@@ -68,6 +77,7 @@ export function RegisterPage() {
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setError("");
+    setSuccess("");
     setLoading(true);
     const payload = {
       unique: draft.unique.trim(),
@@ -80,6 +90,14 @@ export function RegisterPage() {
 
     try {
       const data = await api.registerPatient(payload);
+      setSuccess(
+        `Patient ${payload.firstname} ${payload.lastname} registered successfully. Continuing to vitals…`,
+      );
+      sessionStorage.setItem(
+        "patient_chart_flash",
+        `Patient registered successfully (${payload.unique}).`,
+      );
+      await new Promise((resolve) => window.setTimeout(resolve, 1000));
       navigate(`/vitals/${data.id}`, {
         state: {
           patientId: data.id,
@@ -132,6 +150,11 @@ export function RegisterPage() {
         </div>
 
         {error ? <div className="alert alert-error">{error}</div> : null}
+        {success ? (
+          <div className="alert alert-success" role="status">
+            {success}
+          </div>
+        ) : null}
 
         {step === 1 ? (
           <div className="form-grid">
