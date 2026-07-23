@@ -519,7 +519,7 @@ export function ListingPage() {
               <thead>
                 <tr>
                   <th className="row-index-col" scope="col">
-                    <span className="sr-only">Row number</span>
+                    No.
                   </th>
                   <th>Patient Id</th>
                   <th>Name</th>
@@ -546,9 +546,7 @@ export function ListingPage() {
                 ) : (
                   pagedRows.map((row, index) => (
                     <tr key={`${row.patient_id}-${row.visit_date ?? "none"}`}>
-                      <td className="row-index-col">
-                        <span className="row-index">{String(pageStart + index).padStart(2, "0")}</span>
-                      </td>
+                      <td className="row-index-col">{pageStart + index}</td>
                       <td className="mono">{row.unique}</td>
                       <td className="name-cell">
                         {row.name
