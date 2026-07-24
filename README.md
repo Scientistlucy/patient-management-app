@@ -70,7 +70,7 @@ Postman intro mentions “CRUD”, but the published collection has **no update/
 - Vitals capture with **auto BMI**
 - BMI routing: **≤ 25 → General assessment**, **> 25 → Overweight assessment**
 - Patient listing: search, gender, visit date, age filters, BMI status KPIs
-- Pagination: **Previous / Next** and **Show 10 / 20 / 50**
+- Pagination: **Previous / Next** and **Show 10 / 20 / 50 / 100**
 - Download report as **CSV** or **PDF**
 - Clinical charting UI (IBM Plex, teal brand mark)
 - Loading status on auth, registration, vitals, assessment, and listing
@@ -167,7 +167,7 @@ App: `http://localhost:5173`
 2. Register a patient with a unique Patient Id  
 3. Enter height/weight and confirm BMI routing  
 4. Complete the assessment form  
-5. Open Patient Listing — try search, filters, **Show 10/20/50**, and report download  
+5. Open Patient Listing — try search, filters, **Show 10/20/50/100**, and report download  
 
 ## Hosting
 
