@@ -38,7 +38,6 @@ export function LoginPage() {
     const fd = new FormData(e.currentTarget);
     const nextEmail = String(fd.get("email") || "").trim();
     const password = String(fd.get("password") || "");
-    const keepSignedIn = mode === "signup" ? true : remember;
 
     if (!validate(nextEmail, password)) return;
 
@@ -51,20 +50,22 @@ export function LoginPage() {
           firstname: String(fd.get("firstname") || "").trim(),
           lastname: String(fd.get("lastname") || "").trim(),
         });
-        setSuccess("Account created successfully. Signing you in…");
+        setEmail(nextEmail);
+        setRememberedEmail(nextEmail);
+        setMode("signin");
+        setFieldErrors({});
+        setSuccess("Account created successfully. Please sign in.");
+        return;
       }
 
       const data = await api.signin({ email: nextEmail, password });
+      setSuccess(`Signed in successfully. Welcome back${data.name ? `, ${data.name}` : ""}.`);
 
-      if (mode === "signin") {
-        setSuccess(`Signed in successfully. Welcome back${data.name ? `, ${data.name}` : ""}.`);
-      }
-
-      if (keepSignedIn) setRememberedEmail(nextEmail);
+      if (remember) setRememberedEmail(nextEmail);
       else setRememberedEmail(null);
 
       await new Promise((resolve) => window.setTimeout(resolve, 900));
-      login(data.access_token, data.name, keepSignedIn);
+      login(data.access_token, data.name, remember);
       navigate("/register", { replace: true });
     } catch (err) {
       if (err instanceof ApiError) {
